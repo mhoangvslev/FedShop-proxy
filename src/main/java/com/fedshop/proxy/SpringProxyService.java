@@ -68,11 +68,15 @@ public class SpringProxyService {
 
             if (qparams.size() > 0) {
                 Info.NB_HTTP_REQ.incrementAndGet();
-                String responseBody = serverResponse.getBody();
-                if (responseBody != null) {
-                    // logger.info(responseBody);
-                    Info.DATA_TRANSFER.addAndGet(responseBody.getBytes().length);
+
+                long contentLength = serverResponse.getHeaders().getContentLength();
+                if (contentLength == -1) {
+                    String responseBody = serverResponse.getBody();
+                    if (responseBody != null) {
+                        contentLength = responseBody.getBytes().length;
+                    }
                 }
+                Info.DATA_TRANSFER.addAndGet(contentLength);
             }
 
             HttpHeaders responseHeaders = new HttpHeaders();
