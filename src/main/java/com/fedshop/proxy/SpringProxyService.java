@@ -59,7 +59,7 @@ public class SpringProxyService {
             if (qparams.containsKey("query")) {
                 String queryString = qparams.get("query");
                 // logger.info(queryString);
-                if (queryString.toLowerCase().matches("select.*limit 1")) {
+                if (queryString.toLowerCase().matches("select.*limit 1") || queryString.toLowerCase().matches("ask\\s+\\{")) {
                     Info.NB_ASK.incrementAndGet();
                 }
             }
