@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class Info {
+    
     public static AtomicLong NB_ASK = new AtomicLong(0) ;
     public static AtomicLong NB_HTTP_REQ = new AtomicLong(0);
     public static AtomicLong DATA_TRANSFER = new AtomicLong(0);

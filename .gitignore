@@ -17,3 +17,5 @@ buildNumber.properties
 .classpath
 
 src/test/resources/apache-jmeter-5.6
+.idea/
+.DS_Store

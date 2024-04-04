@@ -24,6 +24,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
+    <start-class>com.fedshop.proxy.SpringProxy</start-class>
   </properties>
 
   <dependencies>
@@ -86,6 +87,12 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.14.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -146,7 +153,21 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
-
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <configuration>
+            <mainClass>com.fedshop.proxy.SpringProxy</mainClass>
+            <layout>JAR</layout>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>

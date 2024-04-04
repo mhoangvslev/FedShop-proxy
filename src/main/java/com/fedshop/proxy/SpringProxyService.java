@@ -1,5 +1,6 @@
 package com.fedshop.proxy;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
@@ -32,13 +33,19 @@ public class SpringProxyService {
         String requestUrl = request.getRequestURI();
 
         // log if required in this line
-        URI uri = new URI(proxyTo);
+        // logger.info(String.format("requestURI: %s, proxyTo: %s", requestUrl, proxyTo));
+
+        // qparams.forEach((key, value) -> {
+        //    logger.info(String.format("qparam_key: %s, qparam_value: %s", key, value));
+        // });
 
         // replacing context path form urI to match actual gateway URI
-        uri = UriComponentsBuilder.fromUri(uri)
+        URI uri = UriComponentsBuilder.fromUriString(proxyTo)
                 .path(requestUrl)
                 .query(request.getQueryString())
                 .build(true).toUri();
+
+        // logger.info(String.format("finalUri: %s", uri));
 
         HttpHeaders headers = new HttpHeaders();
         Enumeration<String> headerNames = request.getHeaderNames();
