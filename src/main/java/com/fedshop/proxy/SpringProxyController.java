@@ -99,15 +99,15 @@ public class SpringProxyController {
     @ResponseBody
     public String setDest(@RequestParam("proxyFrom") String src, @RequestParam("proxyTo") String destination) throws IOException {
 
-        File dockerenv = new File("/.dockerenv");
-        String platform = "Not Docker:";
-        if (dockerenv.isFile()) {
-            platform = "Docker:";
-            destination = destination.replace("localhost", "host.docker.internal");
-        }
+        // File dockerenv = new File("/.dockerenv");
+        // String platform = "Not Docker:";
+        // if (dockerenv.isFile()) {
+        //    platform = "Docker:";
+        //    destination = destination.replace("localhost", "host.docker.internal");
+        //}
         proxyToMap.put(src, destination);
 
-        return String.format(platform + "Proxy destination set to %s for path %s", destination, src);
+        return String.format("Proxy destination set to %s for path %s", destination, src);
     }
 
     @RequestMapping("/reset")
