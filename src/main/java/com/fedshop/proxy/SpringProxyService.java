@@ -41,7 +41,8 @@ public class SpringProxyService {
 
         // replacing context path form urI to match actual gateway URI
         URI uri = UriComponentsBuilder.fromUriString(proxyTo)
-                .path(requestUrl)
+                //.path(requestUrl)
+                .path("/sparql")
                 .query(request.getQueryString())
                 .build(true).toUri();
 

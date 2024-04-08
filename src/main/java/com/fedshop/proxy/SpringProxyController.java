@@ -49,7 +49,7 @@ public class SpringProxyController {
             }
         }
 
-        return String.format("The mapping table has been updated successfully.");
+        return "The mapping table has been updated successfully.";
     }
 
     @RequestMapping("/services/{graph}/sparql")
@@ -73,7 +73,7 @@ public class SpringProxyController {
     @ResponseBody
     public String clearMapping() {
         proxyToMap.clear();
-        return String.format("Successfully cleared mapping");
+        return "Successfully cleared mapping";
     }
 
     @RequestMapping("/mapping/{graph}")
@@ -89,10 +89,8 @@ public class SpringProxyController {
     @RequestMapping("/mapping/remove")
     @ResponseBody
     public String setDest(@RequestParam("proxyFrom") String src) throws IOException {
-        if (proxyToMap.containsKey(src)) {
-            proxyToMap.remove(src);
-        }
-        return String.format("The mapping table has been updated successfully.");
+        proxyToMap.remove(src);
+        return "The mapping table has been updated successfully.";
     }
 
     @RequestMapping("/mapping/set-destination")

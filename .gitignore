@@ -19,3 +19,4 @@ buildNumber.properties
 src/test/resources/apache-jmeter-5.6
 .idea/
 .DS_Store
+.m2/
