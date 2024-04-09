@@ -26,27 +26,17 @@ import java.util.Map;
 public class SpringProxyService {
     private final static Logger logger = LogManager.getLogger(SpringProxyService.class);
 
-    public ResponseEntity<String> processProxyRequest(String proxyTo, Map<String, String> qparams, String body,
+    public ResponseEntity<String> processProxyRequest(Map<String, String> qparams, String body,
             HttpMethod method, HttpServletRequest request, String traceId)
             throws URISyntaxException {
         ThreadContext.put("traceId", traceId);
         String requestUrl = request.getRequestURI();
 
-        // log if required in this line
-        // logger.info(String.format("requestURI: %s, proxyTo: %s", requestUrl, proxyTo));
-
-        // qparams.forEach((key, value) -> {
-        //    logger.info(String.format("qparam_key: %s, qparam_value: %s", key, value));
-        // });
-
-        // replacing context path form urI to match actual gateway URI
+        String proxyTo = String.format("%s://%s", request.getScheme(), request.getHeader("host"));
         URI uri = UriComponentsBuilder.fromUriString(proxyTo)
-                //.path(requestUrl)
-                .path("/sparql")
+                .path(requestUrl)
                 .query(request.getQueryString())
                 .build(true).toUri();
-
-        // logger.info(String.format("finalUri: %s", uri));
 
         HttpHeaders headers = new HttpHeaders();
         Enumeration<String> headerNames = request.getHeaderNames();

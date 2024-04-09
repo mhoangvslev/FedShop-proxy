@@ -30,82 +30,13 @@ public class SpringProxyController {
     @Autowired
     SpringProxyService service;
 
-    private ConcurrentHashMap<String, String> proxyToMap = new ConcurrentHashMap<>();
-
-    @RequestMapping("/upload")
-    @ResponseBody
-    public String handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
-        // Read JSON from file
-        InputStream inputStream = file.getInputStream();
-        ObjectMapper objectMapper = new ObjectMapper();
-        HashMap<String, String> tmpMap = objectMapper.readValue(inputStream, HashMap.class);
-        for (Map.Entry<String, String> entry : tmpMap.entrySet()) {
-            String src = entry.getKey();
-            String dest = entry.getValue();
-            try {
-                this.setDest(src, dest);
-            } catch (IOException e) {
-                return "ERROR: The mapping table has not been set correctly.";
-            }
-        }
-
-        return "The mapping table has been updated successfully.";
-    }
-
-    @RequestMapping("/services/{graph}/sparql")
+    @RequestMapping("/**")
     public ResponseEntity<String> sendRequestToSPM(
-            @PathVariable String graph,
             @RequestParam(required = true) Map<String, String> qparams,
             @RequestBody(required = false) String body,
             HttpMethod method, HttpServletRequest request, HttpServletResponse response)
             throws URISyntaxException {
-        String proxyTo = proxyToMap.get(graph);
-        return service.processProxyRequest(proxyTo, qparams, body, method, request, UUID.randomUUID().toString());
-    }
-
-    @RequestMapping("/mapping")
-    @ResponseBody
-    public String getMapping() {
-        return StringUtils.join(proxyToMap);
-    }
-
-    @RequestMapping("/mapping/clear")
-    @ResponseBody
-    public String clearMapping() {
-        proxyToMap.clear();
-        return "Successfully cleared mapping";
-    }
-
-    @RequestMapping("/mapping/{graph}")
-    @ResponseBody
-    public String getDest(@PathVariable String graph) {
-        if (proxyToMap.containsKey(graph)) {
-            return String.format("%s is mapped to %s", graph, proxyToMap.get(graph));
-        } else {
-            return String.format("%s is not mapped to any destination!", graph);
-        }
-    }
-
-    @RequestMapping("/mapping/remove")
-    @ResponseBody
-    public String setDest(@RequestParam("proxyFrom") String src) throws IOException {
-        proxyToMap.remove(src);
-        return "The mapping table has been updated successfully.";
-    }
-
-    @RequestMapping("/mapping/set-destination")
-    @ResponseBody
-    public String setDest(@RequestParam("proxyFrom") String src, @RequestParam("proxyTo") String destination) throws IOException {
-
-        // File dockerenv = new File("/.dockerenv");
-        // String platform = "Not Docker:";
-        // if (dockerenv.isFile()) {
-        //    platform = "Docker:";
-        //    destination = destination.replace("localhost", "host.docker.internal");
-        //}
-        proxyToMap.put(src, destination);
-
-        return String.format("Proxy destination set to %s for path %s", destination, src);
+        return service.processProxyRequest(qparams, body, method, request, UUID.randomUUID().toString());
     }
 
     @RequestMapping("/reset")
